@@ -81,7 +81,7 @@
 <section style="text-align: center;">
   <!-- 包含项目 logo 的图形容器 -->
   <figure>
-    <!-- 项目 logo 图片 -->
+    <!-- 项目 logo 图片 --  alt 属性是 <img> 标签的一个非常重要的属性，其全称是 "alternative text">
     <img src="https://github.com/Zzaphkiel/Seraphine/assets/60383222/78c14456-8f8e-4137-a6bc-20896c382c1a" alt="Seraphine logo">
   </figure>
   
