@@ -25,6 +25,7 @@
 
 
 <section>
+  
   <figure>
     <img src="https://github.com/Zzaphkiel/Seraphine/assets/60383222/78c14456-8f8e-4137-a6bc-20896c382c1a" alt="Seraphine logo">
   </figure>
