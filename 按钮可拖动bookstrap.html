@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Drag and Drop Example</title>
+</head>
+<body>
+    <!-- 项目容器 -->
+    <div class="container mt-4 p-3 border border-secondary rounded-3" id="project1">
+        <!-- 核心实验部分 -->
+        <div class="core mb-3 p-3 border border-secondary rounded-3" id="core1">
+            <!-- 实验阶段排列为行 -->
+            <div class="row">
+                <!-- 实验阶段一 -->
+                <div class="col epi mb-2 border bg-light rounded-3">
+                    <h5 class="epi-name p-2">Experiment</h5>
+                    <div class="node-container p-3">
+                        <div class="node mb-2 p-2 border rounded" id="node1">
+                            <a href="#task1" class="btn btn-link">Sample prepare</a>
+                            <button class="btn btn-secondary btn-sm float-end drag-handle" draggable="true">☰</button>
+                        </div>
+                        <div class="node p-2 border rounded" id="node2">
+                            <a href="#task2" class="btn btn-link">Mass Spect</a>
+                            <button class="btn btn-secondary btn-sm float-end drag-handle" draggable="true">☰</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 实验阶段二 -->
+                <div class="col epi mb-2 border bg-light rounded-3">
+                    <h5 class="epi-name p-2">Data analysis</h5>
+                    <div class="node-container p-3">
+                        <div class="node mb-2 p-2 border rounded" id="node3">
+                            <a href="#task3" class="btn btn-link">DB search</a>
+                            <button class="btn btn-secondary btn-sm float-end drag-handle" draggable="true">☰</button>
+                        </div>
+                        <div class="node mb-2 p-2 border rounded" id="node4">
+                            <a href="#task4" class="btn btn-link">Statistic Validation</a>
+                            <button class="btn btn-secondary btn-sm float-end drag-handle" draggable="true">☰</button>
+                        </div>
+                        <div class="node p-2 border rounded" id="node5">
+                            <a href="#task4" class="btn btn-link">Bioinformatic</a>
+                            <button class="btn btn-secondary btn-sm float-end drag-handle" draggable="true">☰</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 实验阶段三 -->
+                <div class="col epi mb-2 border bg-light rounded-3">
+                    <h5 class="epi-name p-2">Report</h5>
+                    <div class="node-container p-3">
+                        <div class="node mb-2 p-2 border rounded" id="node6">
+                            <a href="#task5" class="btn btn-link">Plots</a>
+                            <button class="btn btn-secondary btn-sm float-end drag-handle" draggable="true">☰</button>
+                        </div>
+                        <div class="node p-2 border rounded" id="node7">
+                            <a href="#task6" class="btn btn-link">Summary</a>
+                            <button class="btn btn-secondary btn-sm float-end drag-handle" draggable="true">☰</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dragHandles = document.querySelectorAll('.drag-handle');
+            const epis = document.querySelectorAll('.epi');
+
+            dragHandles.forEach(handle => {
+                handle.addEventListener('dragstart', function(event) {
+                    const node = handle.closest('.node');
+                    event.dataTransfer.setData('text/plain', node.id);
+                    event.dataTransfer.effectAllowed = 'move';
+                });
+            });
+
+            epis.forEach(epi => {
+                epi.addEventListener('dragover', function(event) {
+                    event.preventDefault();
+                });
+
+                epi.addEventListener('drop', function(event) {
+                    event.preventDefault();
+                    const nodeId = event.dataTransfer.getData('text/plain');
+                    const node = document.getElementById(nodeId);
+                    if (node) {
+                        epi.querySelector('.node-container').appendChild(node);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
