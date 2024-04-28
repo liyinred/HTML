@@ -145,7 +145,7 @@ fetchDueDate(core_id, epic_stage, days, due_div): 当用户输入天数并提交
 
 
 
-```JavaScript
+```javascript
 function showCoreInEpicDue(core_id, epic_stage, card) {
     fetch("/progress/showCoreInEpicDue", {
         method: 'POST',
@@ -251,9 +251,5 @@ function fetchDueDate(core_id, epic_stage, due_date_str, due_div) {
     .catch(error => {
         console.error('Error fetching updated due date:', error);
     });
-}
-```
-
-
 }
 ```
