@@ -144,5 +144,116 @@ fetchDueDate(core_id, epic_stage, days, due_div): 当用户输入天数并提交
 通过这种方式，每次更新日期时都会确保相关的事件处理器被正确设置，避免了按钮无响应的问题。
 
 
+
+```JavaScript
+function showCoreInEpicDue(core_id, epic_stage, card) {
+    fetch("/progress/showCoreInEpicDue", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ core_id: core_id, epic_stage: epic_stage })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const due_date = data.due_date;
+        updateDueDateInCard(card, due_date, core_id, epic_stage);
+    })
+    .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+}
+
+function updateDueDateInCard(card, due_date, core_id, epic_stage) {
+    const due_div = card.querySelector('.due_date');
+    due_div.innerHTML = `
+        <strong>Due in epic:</strong> ${due_date}
+        <div style="padding-left:50px">
+            <button class="set_time btn btn-outline-primary">Change</button>
+        </div>
+    `;
+
+    const changeBtn = due_div.querySelector('.set_time');
+    changeBtn.onclick = function() {
+        displayModal(core_id, epic_stage, due_div);
+    };
+}
+
+function displayModal(core_id, epic_stage, due_div) {
+    let modal = document.getElementById("myModal");
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "myModal";
+        modal.style.display = "none";
+        modal.style.position = "fixed";
+        modal.style.left = "0";
+        modal.style.top = "0";
+        modal.style.width = "100%";
+        modal.style.height = "100%";
+        modal.style.backgroundColor = "rgba(0,0,0,0.4)";
+        modal.innerHTML = `
+            <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
+                <span class="close" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+                <p>📂📂📂</p>
+                <label for="due_dateInput">Input due_date:</label>
+                <input type="number" id="due_dateInput" placeholder="Enter due_date">
+                <button id="submitdue_date" class="btn btn-primary">Submit</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.querySelector(".close").onclick = function() {
+            modal.style.display = "none";
+        };
+    }
+
+    modal.style.display = "block";
+
+    const submitBtn = modal.querySelector('#submitdue_date');
+    submitBtn.onclick = function() {
+        const due_date = document.getElementById("due_dateInput").value;
+        modal.style.display = "none";
+        fetchDueDate(core_id, epic_stage, due_date, due_div);
+    };
+}
+
+function fetchDueDate(core_id, epic_stage, due_date_str, due_div) {
+    // 将 due_date_str 转换为整数，表示要增加的天数
+    const daysToAdd = parseInt(due_date_str, 10);
+
+    // 获取当前日期并添加指定的天数
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + daysToAdd);
+    const futureDate = currentDate.toISOString().split('T')[0];  // 格式化为 YYYY-MM-DD
+
+    fetch("/progress/showCoreInEpicDue", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ core_id: core_id, epic_stage: epic_stage, due_date: futureDate })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const new_due_date = data.due_date;
+        updateDueDateInCard(due_div.parentNode, new_due_date, core_id, epic_stage);
+    })
+    .catch(error => {
+        console.error('Error fetching updated due date:', error);
+    });
+}
+```
+
+
 }
 ```
