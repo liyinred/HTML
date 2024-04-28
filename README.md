@@ -260,3 +260,33 @@ function fetchDueDate(core_id, epic_stage, due_date_str, due_div) {
     });
 }
 ```
+
+```python
+def showCoreInEpicDue(request):
+    if request.method == 'POST':
+        # Get data from the request body
+        data_from_frontend = json.loads(request.body.decode('utf-8'))
+        print('Data received from frontend:', data_from_frontend)
+        core_id = data_from_frontend.get('core_id')
+        epic_stage = data_from_frontend.get('epic_stage')
+        
+        core = work_task_series.Core.objects.get(pk = core_id)
+        epic = work_task_series.Epic.objects.filter(name = epic_stage).first()
+
+        queryset = work_task_series.CoreEpicTime.objects.filter(
+            core = core,
+            epic = epic
+        ).order_by('-pk')
+
+        # due_date = 'Not set'
+        
+        due_date = data_from_frontend.get('due_date')
+        if queryset.exists():
+            due_date = queryset.first().due_date
+            due_date = due_date.strftime('%Y-%m-%d')
+        return JsonResponse({'due_date': due_date})
+
+    else:
+        # Handle other HTTP methods if needed
+        return JsonResponse({'error': 'Only POST requests are allowed'})
+```
