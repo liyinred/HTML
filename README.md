@@ -146,31 +146,35 @@ fetchDueDate(core_id, epic_stage, days, due_div): 当用户输入天数并提交
 
 
 ```javascript
+// 定义一个函数来显示某个核心任务在特定史诗阶段的截止日期
 function showCoreInEpicDue(core_id, epic_stage, card) {
+    // 发送一个 POST 请求到服务器端的指定 URL，包含核心任务 ID 和史诗阶段
     fetch("/progress/showCoreInEpicDue", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+        method: 'POST', // 请求方式为 POST
+        headers: { // 请求头
+            'Content-Type': 'application/json', // 请求内容类型为 JSON
         },
-        body: JSON.stringify({ core_id: core_id, epic_stage: epic_stage })
+        body: JSON.stringify({ core_id: core_id, epic_stage: epic_stage }) // 请求体，发送 JSON 字符串
     })
-    .then(response => {
-        if (!response.ok) {
+    .then(response => { // 处理响应
+        if (!response.ok) { // 如果响应状态不是 ok，则抛出错误
             throw new Error('Network response was not ok');
         }
-        return response.json();
+        return response.json(); // 将响应转换为 JSON
     })
-    .then(data => {
-        const due_date = data.due_date;
-        updateDueDateInCard(card, due_date, core_id, epic_stage);
+    .then(data => { // 处理转换后的数据
+        const due_date = data.due_date; // 从响应数据中获取截止日期
+        updateDueDateInCard(card, due_date, core_id, epic_stage); // 更新卡片上的截止日期
     })
-    .catch(error => {
+    .catch(error => { // 捕获并处理错误
         console.error('There was a problem with the fetch operation:', error);
     });
 }
 
+// 定义一个函数，用于在卡片上更新截止日期信息
 function updateDueDateInCard(card, due_date, core_id, epic_stage) {
-    const due_div = card.querySelector('.due_date');
+    const due_div = card.querySelector('.due_date'); // 从卡片中找到显示截止日期的元素
+    // 设置截止日期的 HTML 内容
     due_div.innerHTML = `
         <strong>Due in epic:</strong> ${due_date}
         <div style="padding-left:50px">
@@ -178,15 +182,16 @@ function updateDueDateInCard(card, due_date, core_id, epic_stage) {
         </div>
     `;
 
-    const changeBtn = due_div.querySelector('.set_time');
-    changeBtn.onclick = function() {
-        displayModal(core_id, epic_stage, due_div);
+    const changeBtn = due_div.querySelector('.set_time'); // 获取更改按钮
+    changeBtn.onclick = function() { // 设置更改按钮的点击事件
+        displayModal(core_id, epic_stage, due_div); // 显示一个模态对话框以更改截止日期
     };
 }
 
+// 定义一个函数，用于显示修改截止日期的模态对话框
 function displayModal(core_id, epic_stage, due_div) {
-    let modal = document.getElementById("myModal");
-    if (!modal) {
+    let modal = document.getElementById("myModal"); // 尝试获取模态对话框元素
+    if (!modal) { // 如果模态对话框不存在，则创建一个
         modal = document.createElement("div");
         modal.id = "myModal";
         modal.style.display = "none";
@@ -195,35 +200,36 @@ function displayModal(core_id, epic_stage, due_div) {
         modal.style.top = "0";
         modal.style.width = "100%";
         modal.style.height = "100%";
-        modal.style.backgroundColor = "rgba(0,0,0,0.4)";
+        modal.style.backgroundColor = "rgba(0,0,0,0.4)"; // 半透明背景
         modal.innerHTML = `
             <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;">
-                <span class="close" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+                <span class="close" style="color: #aaa; float: right; font-size: 28px; font-weight:bold;">&times;</span>
                 <p>📂📂📂</p>
                 <label for="due_dateInput">Input due_date:</label>
                 <input type="number" id="due_dateInput" placeholder="Enter due_date">
                 <button id="submitdue_date" class="btn btn-primary">Submit</button>
             </div>
         `;
-        document.body.appendChild(modal);
+        document.body.appendChild(modal); // 将模态对话框添加到文档中
 
-        modal.querySelector(".close").onclick = function() {
-            modal.style.display = "none";
+        modal.querySelector(".close").onclick = function() { // 设置关闭按钮的点击事件
+            modal.style.display = "none"; // 隐藏模态对话框
         };
     }
 
-    modal.style.display = "block";
+    modal.style.display = "block"; // 显示模态对话框
 
-    const submitBtn = modal.querySelector('#submitdue_date');
-    submitBtn.onclick = function() {
-        const due_date = document.getElementById("due_dateInput").value;
-        modal.style.display = "none";
-        fetchDueDate(core_id, epic_stage, due_date, due_div);
+    const submitBtn = modal.querySelector('#submitdue_date'); // 获取提交按钮
+    submitBtn.onclick = function() { // 设置提交按钮的点击事件
+        const due_date = document.getElementById("due_dateInput").value; // 获取输入的新截止日期
+        modal.style.display = "none"; // 隐藏模态对话框
+        fetchDueDate(core_id, epic_stage, due_date, due_div); // 发送请求更新截止日期
     };
 }
 
+// 定义一个函数，用于发送请求并更新截止日期
 function fetchDueDate(core_id, epic_stage, due_date_str, due_div) {
-    // 将 due_date_str 转换为整数，表示要增加的天数
+    // 将输入的截止日期字符串转换为整数，表示要增加的天数
     const daysToAdd = parseInt(due_date_str, 10);
 
     // 获取当前日期并添加指定的天数
@@ -231,24 +237,25 @@ function fetchDueDate(core_id, epic_stage, due_date_str, due_div) {
     currentDate.setDate(currentDate.getDate() + daysToAdd);
     const futureDate = currentDate.toISOString().split('T')[0];  // 格式化为 YYYY-MM-DD
 
+    // 发送一个 POST 请求到服务器端的指定 URL，更新截止日期
     fetch("/progress/showCoreInEpicDue", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+        method: 'POST', // 请求方式为 POST
+        headers: { // 请求头
+            'Content-Type': 'application/json', // 请求内容类型为 JSON
         },
-        body: JSON.stringify({ core_id: core_id, epic_stage: epic_stage, due_date: futureDate })
+        body: JSON.stringify({ core_id: core_id, epic_stage: epic_stage, due_date: futureDate }) // 请求体，发送 JSON 字符串
     })
-    .then(response => {
-        if (!response.ok) {
+    .then(response => { // 处理响应
+        if (!response.ok) { // 如果响应状态不是 ok，则抛出错误
             throw new Error('Network response was not ok');
         }
-        return response.json();
+        return response.json(); // 将响应转换为 JSON
     })
-    .then(data => {
-        const new_due_date = data.due_date;
-        updateDueDateInCard(due_div.parentNode, new_due_date, core_id, epic_stage);
+    .then(data => { // 处理转换后的数据
+        const new_due_date = data.due_date; // 从响应数据中获取新的截止日期
+        updateDueDateInCard(due_div.parentNode, new_due_date, core_id, epic_stage); // 更新卡片上的截止日期
     })
-    .catch(error => {
+    .catch(error => { // 捕获并处理错误
         console.error('Error fetching updated due date:', error);
     });
 }
