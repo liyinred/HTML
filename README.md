@@ -263,30 +263,35 @@ function fetchDueDate(core_id, epic_stage, due_date_str, due_div) {
 
 ```python
 def showCoreInEpicDue(request):
-    if request.method == 'POST':
-        # Get data from the request body
-        data_from_frontend = json.loads(request.body.decode('utf-8'))
-        print('Data received from frontend:', data_from_frontend)
-        core_id = data_from_frontend.get('core_id')
-        epic_stage = data_from_frontend.get('epic_stage')
+    if request.method == 'POST':  # 如果请求方式为POST
+        # 从请求体中获取数据
+        data_from_frontend = json.loads(request.body.decode('utf-8'))  # 将请求体中的内容解码并转换为JSON对象
+        print('Data received from frontend:', data_from_frontend)  # 打印从前端接收到的数据
+        core_id = data_from_frontend.get('core_id')  # 从数据中获取core_id
+        epic_stage = data_from_frontend.get('epic_stage')  # 从数据中获取epic_stage
         
-        core = work_task_series.Core.objects.get(pk = core_id)
-        epic = work_task_series.Epic.objects.filter(name = epic_stage).first()
+        # 根据core_id从数据库中获取Core对象
+        core = work_task_series.Core.objects.get(pk=core_id)
+        # 从数据库中查找第一个名称为epic_stage的Epic对象
+        epic = work_task_series.Epic.objects.filter(name=epic_stage).first()
 
+        # 根据core和epic查询CoreEpicTime对象，并按主键倒序排序
         queryset = work_task_series.CoreEpicTime.objects.filter(
-            core = core,
-            epic = epic
+            core=core,
+            epic=epic
         ).order_by('-pk')
 
+        # 初始化due_date变量
         # due_date = 'Not set'
         
-        due_date = data_from_frontend.get('due_date')
-        if queryset.exists():
-            due_date = queryset.first().due_date
-            due_date = due_date.strftime('%Y-%m-%d')
-        return JsonResponse({'due_date': due_date})
+        due_date = data_from_frontend.get('due_date')  # 从数据中获取due_date
+        if queryset.exists():  # 如果查询集不为空
+            due_date = queryset.first().due_date  # 获取最近的due_date
+            due_date = due_date.strftime('%Y-%m-%d')  # 将due_date格式化为'YYYY-MM-DD'格式
+        return JsonResponse({'due_date': due_date})  # 返回JSON响应，包含due_date
 
     else:
-        # Handle other HTTP methods if needed
-        return JsonResponse({'error': 'Only POST requests are allowed'})
+        # 处理其他HTTP方法
+        return JsonResponse({'error': 'Only POST requests are allowed'})  # 如果不是POST请求，返回错误信息
+
 ```
