@@ -74,60 +74,109 @@
     color: black; /* 字体颜色为黑色 */
     font-size: 18px; /* 字体大小为18px */
 }
-.core {
-    width: 90%; /* 宽度为父元素的90% */
-    min-height: 60px; /* 最小高度为60px */
-    display: flex; /* 使用Flexbox布局 */
-    flex-direction: row; /* 主轴方向为水平方向 */
-    justify-content: space-between; /* 子元素之间的间距平均分布 */
-    align-items: center; /* 子元素在交叉轴上居中对齐 */
-    padding: 5px; /* 内边距5px */
-    margin-top: 20px; /* 顶部外边距为20px */
-    background-color: #7f788b; /* 背景色为淡紫灰色 */
-    border-radius: 8px; /* 边框圆角为8px */
-    position: relative; /* 相对定位，可能用于后续绝对定位的子元素 */
+
+
+
+
+/* 设置整个页面的布局 */
+body {
+    display: flex; /* 使用flex布局，使其子元素可以灵活地排列 */
+    justify-content: center; /* 子元素水平居中对齐 */
+    margin: 0; /* 去除默认的边距 */
+    background-color: #f4f4f4; /* 设置页面的背景颜色为浅灰色 */
 }
-.core:before {
-    content: attr(data-name); /* 伪元素内容来自data-name属性 */
-    position: absolute; /* 绝对定位，相对于.core定位 */
-    top: -8px; /* 顶部外超出-8px，显示在.core外部 */
-    left: 50%; /* 左侧位置50%，居中 */
-    transform: translateX(-50%); /* 通过向左平移50%来精确居中 */
-    font-weight: bold; /* 字体加粗 */
-    color: rgb(168, 37, 52); /* 字体颜色为深红色 */
+
+/* 设置.container类的样式，用于页面主体区域 */
+.container {
+    background-color: white; /* 设置背景颜色为白色 */
+    border-radius: 15px; /* 设置边角为圆角，半径为15px */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 设置阴影效果 */
+    width: 40%; /* 宽度设置为容器宽度的40% */
+    padding: 20px; /* 内边距为20px */
+    box-sizing: border-box; /* 边框和内边距包含在宽度内 */
+    border: 2px solid #ddd; /* 设置边框为浅灰色 */
 }
-.epi {
-    width: 30%; /* 宽度为父元素的30% */
-    height: auto; /* 高度根据内容自动调整 */
-    padding: 5px; /* 内边距5px */
-    background-color: darkgray; /* 背景色为深灰色 */
-    border-radius: 5px; /* 边框圆角为5px */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* 阴影效果，轻微 */
-    text-align: center; /* 文本居中对齐 */
-    color: black; /* 字体颜色为黑色 */
-    display: flex; /* 使用Flexbox布局 */
-    flex-direction: column; /* 主轴方向为垂直方向 */
-    justify-content: space-between; /* 子元素间隔均匀 */
-    align-items: center; /* 子元素在交叉轴上居中对齐 */
+
+/* 设置.header类的样式，通常用于标题或头部区域 */
+.header {
+    font-size: 24px; /* 设置字体大小为24px */
+    color: #333; /* 设置字体颜色为深灰色 */
+    margin-bottom: 20px; /* 设置与下面元素的间距为20px */
+    text-align: center; /* 文本居中显示 */
 }
-.epi-name {
-    width: 100%; /* 宽度为100%，即占满父元素宽度 */
-    font-size: 16px; /* 字体大小为16px */
-    font-weight: bold; /* 字体加粗 */
-    color: white; /* 字体颜色为白色 */
-    padding: 5px 0; /* 上下内边距5px，左右无内边距 */
-    background-color: black; /* 背景颜色为黑色 */
-    border-radius: 8px; /* 边框圆角为8px */
+
+/* 设置.project类的样式，用于展示项目或特定内容区块 */
+.project {
+    display: block; /* 使元素以块级元素显示 */
+    background-color: rgb(101, 42, 165); /* 设置背景颜色 */
+    color: white; /* 文本颜色为白色 */
+    text-align: center; /* 文本居中显示 */
+    padding: 10px; /* 内边距为10px */
+    text-decoration: none; /* 去除文本的下划线 */
+    border-radius: 10px; /* 边角圆滑，半径为10px */
+    margin-bottom: 20px; /* 与下面元素的间距为20px */
 }
-.node {
-    width: 48%; /* 宽度为父元素的48% */
-    height: 30px; /* 高度固定为30px */
-    background-color: #e0e0e0; /* 背景色为浅灰色 */
-    color: rgb(79, 165, 207); /* 字体颜色为天蓝色 */
-    border-radius: 5px; /* 边框圆角为5px */
-    line-height: 30px; /* 行高为30px，使文字垂直居中 */
-    text-align: center; /* 文本水平居中对齐 */
-    margin-top: 5px; /* 顶部外边距为5px */
+
+/* 设置.project类在鼠标悬停时的样式变化 */
+.project:hover {
+    background-color: #a400b3; /* 鼠标悬停时背景颜色变化 */
+}
+
+/* 设置.project类内的div元素的样式 */
+.project div {
+    margin: 0; /* 设置外边距为0 */
+}
+
+/* 设置.menu类的样式，用于导航菜单 */
+.menu {
+    display: flex; /* 使用flex布局 */
+    justify-content: space-around; /* 子元素均匀分布 */
+    margin-bottom: 50px; /* 底部间距为50px */
+    border-bottom: 1px dashed; /* 底部边框为虚线 */
+    padding-bottom: 12px; /* 底部内边距为12px */
+}
+
+/* 设置.menu类内的div元素的样式 */
+.menu div {
+    text-align: center; /* 文本居中显示 */
+}
+
+/* 设置.submenu类的样式，通常用于下拉菜单 */
+.submenu {
+    background-color: #EFEFEF; /* 背景颜色为浅灰色 */
+    margin-top: 10px; /* 顶部外边距为10px */
+    padding: 10px; /* 内边距为10px */
+    border-radius: 10px; /* 边角圆滑，半径为10px */
+    display: flex; /* 使用flex布局 */
+    flex-direction: column; /* 子元素垂直排列 */
+}
+
+/* 设置.submenu类内的div元素的样式 */
+.submenu div {
+    padding: 2px; /* 内边距为2px */
+    margin: 15px 0; /* 顶部和底部外边距为15px */
+    background-color: white; /* 背景颜色为白色 */
+    border-radius: 5px; /* 边角圆滑，半径为5px */
+}
+
+/* 设置.button类的样式，用于按钮 */
+.button {
+    display: inline-block; /* 使元素以行内块显示 */
+    padding: 10px 20px; /* 内边距为10px 20px */
+    margin: 5px; /* 外边距为5px */
+    background-color: #007BFF; /* 背景颜色为蓝色 */
+    color: white; /* 文本颜色为白色 */
+    text-align: center; /* 文本居中显示 */
+    text-decoration: none; /* 去除文本的下划线 */
+    border-radius: 5px; /* 边角圆滑，半径为5px */
+    transition: background-color 0.3s; /* 背景颜色变化过渡效果 */
+}
+
+/* 设置.button类在鼠标悬停时的样式变化 */
+.button:hover {
+    background-color: #0056b3; /* 鼠标悬停时背景颜色变化 */
+}
+
 ```
 
 
