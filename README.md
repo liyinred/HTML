@@ -216,7 +216,7 @@ document.querySelectorAll('.drag-container').forEach(container => {
 
 
 
-这段代码的问题在于，当通过按钮点击更改日期后，原本绑定在按钮上的事件处理器因为 innerHTML 的更新被移除了。这意味着新生成的“更改”按钮没有再次绑定必要的事件处理器，导致按钮点击后没有任何响应。
+下面这段代码的问题在于，当通过按钮点击更改日期后，原本绑定在按钮上的事件处理器因为 innerHTML 的更新被移除了。这意味着新生成的“更改”按钮没有再次绑定必要的事件处理器，导致按钮点击后没有任何响应。
 
 在修改后的版本中，我创建了几个函数来更好地组织和管理这些操作：
 
@@ -225,9 +225,6 @@ updateDueDateInCard(card, due_date, core_id, epic_stage): 这个函数更新卡�
 displayModal(core_id, epic_stage, due_div): 这个函数负责显示和设置模态窗口。如果模态窗口不存在，它会创建一个新的，同时设置关闭按钮和提交按钮的事件。
 fetchDueDate(core_id, epic_stage, days, due_div): 当用户输入天数并提交时，这个函数会被调用。它负责向服务器发送请求，更新日期，并调用 updateDueDateInCard 来更新显示的日期和重新绑定事件。
 通过这种方式，每次更新日期时都会确保相关的事件处理器被正确设置，避免了按钮无响应的问题。
-
-
-
 ```javascript
 // 定义一个函数来显示某个核心任务在特定史诗阶段的截止日期
 function showCoreInEpicDue(core_id, epic_stage, card) {
