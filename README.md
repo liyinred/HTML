@@ -178,7 +178,41 @@ body {
 }
 
 ```
+```JavaScript
+// 给所有具有类名 'drag-item' 的元素添加拖动开始事件的监听
+document.querySelectorAll('.drag-item').forEach(item => {
+    // 当拖动开始时，该函数被调用
+    item.addEventListener('dragstart', function(event) {
+        // 设置拖动数据，将拖动的元素的id作为数据传递，格式为纯文本
+        event.dataTransfer.setData('text/plain', event.target.id);
+    });
+});
 
+// 给所有具有类名 'drag-container' 的元素添加事件监听，以支持拖放操作
+document.querySelectorAll('.drag-container').forEach(container => {
+    // 拖动元素经过容器时调用此函数
+    container.addEventListener('dragover', function(event) {
+        // 阻止默认处理，这是必须的，以便允许放置
+        event.preventDefault(); 
+    });
+
+    // 在元素放置时调用此函数
+    container.addEventListener('drop', function(event) {
+        // 阻止事件的默认处理，这也是必要的
+        event.preventDefault();
+        // 从拖动数据中获取元素的id
+        const data = event.dataTransfer.getData('text');
+        // 根据id获取元素
+        const element = document.getElementById(data);
+        // 检查元素是否存在，且放置的目标容器不是该元素的当前父容器
+        if (element && this !== element.parentNode) {
+            // 将元素添加到目标容器中
+            this.appendChild(element);
+        }
+    });
+});
+
+```
 
 
 
