@@ -76,3 +76,25 @@ POST /orders
 Copy code
 POST /user/update
 修改请求中包含敏感数据，故不在URL中显示，而是放在请求体内。
+
+
+```python
+def login_view(request):
+    # 定义一个名为login_view的视图函数，接受一个请求对象作为参数
+    if request.method == 'POST':
+        # 如果请求方式为POST，说明是表单提交
+        username = request.POST['username']  # 从POST请求中获取用户名
+        password = request.POST['password']  # 从POST请求中获取密码
+        user = authenticate(request, username=username, password=password)
+        # 使用Django的authenticate函数验证用户名和密码
+        if user is not None:
+            # 如果验证通过，即user对象存在
+            login(request, user)  # 登录用户，即在会话中记录用户状态
+            return redirect('home')  # 登录成功后重定向到主页
+        else:
+            # 如果用户未通过验证（即用户名或密码不正确）
+            return HttpResponse('登录失败，请检查用户名和密码是否正确。')  # 返回登录失败的消息
+    else:
+        # 如果请求方式不是POST，通常为GET请求
+        return render(request, 'myapp/login.html')  # 返回渲染登录表单的页面
+```
