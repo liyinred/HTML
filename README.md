@@ -76,7 +76,7 @@
     font-size: 18px; /* 字体大小为18px */
 }
 
-
+```<div class="container-fluid p-5 bg-primary text-white text-center">```: 这行代码创建了一个带有container-fluid类的div容器。container-fluid是Bootstrap的一个类，表示这个容器将占满全部的宽度。p-5表示添加5个单位的内边距，bg-primary将背景设置为主要颜色（通常是蓝色），text-white将文字颜色设置为白色，text-center将文本居中对齐。
 
 
 /* 设置整个页面的布局 */
