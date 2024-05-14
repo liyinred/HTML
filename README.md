@@ -1,3 +1,4 @@
+**:not([class*='woo-badge-')** 是一个属性选择器，用于选择具有特定属性值的元素。具体来说，选择所有 class 属性值包含 woo-badge- 的元素。这里的 *= 是一个包含运算符，表示属性值中包含给定字符串。
 <!-- 居中对齐图片 -->
 <p align='center'>
   <img src="https://github.com/Zzaphkiel/Seraphine/assets/60383222/78c14456-8f8e-4137-a6bc-20896c382c1a">
