@@ -1,3 +1,4 @@
+[](https://github.com/liyinred/ccyy/blob/main/747303b9134946c480c5522573767e70.gif)
 :not([class*='woo-badge-') 是一个属性选择器，用于选择具有特定属性值的元素。具体来说，选择所有 class 属性值包含 woo-badge- 的元素。这里的 *= 是一个包含运算符，表示属性值中包含给定字符串。
 <!-- 居中对齐图片 -->
 <p align='center'>
